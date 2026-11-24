@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+Setup/
+TranslitWorkspace-win32-x64/
+*.exe
+*.zip
+*.tar.gz
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment and OS files
+.env
+.DS_Store
+Thumbs.db
