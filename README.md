@@ -2,6 +2,13 @@
 
 Быстрое и удобное десктопное приложение для транслитерации текста на базе **Electron**.
 
+## 📥 Скачать
+
+Готовая автономная версия для Windows (не требует установки, можно запускать с флешки):
+👉 **[Скачать Translit Workspace Portable (v14.8.8)](https://github.com/p1xelcr4ft/translit-workspace/releases/download/v14.8.8/Translit.Workspace.Portable.exe)**
+
+Все релизы доступны на вкладке [Releases](https://github.com/p1xelcr4ft/translit-workspace/releases).
+
 ## ✨ Особенности
 
 - **Поддержка 4 стандартов транслитерации**:
