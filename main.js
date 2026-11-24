@@ -3,6 +3,11 @@ const { app, BrowserWindow, Menu, Tray, globalShortcut, clipboard, dialog, shell
 const path = require('path');
 const { translit } = require('./translitEngine.js'); 
 
+// Автономное хранение данных рядом с .exe при запуске в Portable-режиме
+if (process.env.PORTABLE_EXECUTABLE_DIR) {
+    app.setPath('userData', path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'data'));
+} 
+
 let mainWindow;
 let tray = null;
 let currentMode = 'seo'; 

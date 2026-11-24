@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win"
+    "dist": "electron-builder --win",
+    "dist:portable": "electron-builder --win portable"
   },
   "author": "Bob Boobsky",
   "license": "ISC",
@@ -17,8 +18,14 @@
     "appId": "com.vladimir.translitworkspace",
     "productName": "Translit Workspace",
     "win": {
-      "target": "nsis",
+      "target": [
+        "nsis",
+        "portable"
+      ],
       "icon": "icon.ico"
+    },
+    "portable": {
+      "artifactName": "${productName} Portable.${ext}"
     },
     "nsis": {
       "oneClick": false,

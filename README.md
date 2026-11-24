@@ -35,6 +35,13 @@ npm start
 npm run dist
 ```
 
+### Сборка портативной версии (Portable EXE)
+```bash
+npm run dist:portable
+```
+
+Автономный `.exe`-файл без необходимости установки появится в папке `dist/`.
+
 ## 🛠 Стек технологий
 - **Electron 28**
 - **Vanilla JavaScript, HTML5, CSS3**
