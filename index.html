@@ -189,7 +189,11 @@
     <main>
         <div class="toolbar">
             <h2 id="currentModeTitle">SEO URL (ЧПУ)</h2>
-            <button class="btn" id="copyBtn">Скопировать</button>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <span style="font-size: 12px; color: var(--text-muted);">Хоткей: <b>Ctrl+Shift+T</b> или <b>Ctrl+Alt+T</b></span>
+                <button class="btn" id="translitClipboardBtn" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; font-size: 13px;">📋 Буфер</button>
+                <button class="btn" id="copyBtn">Скопировать</button>
+            </div>
         </div>
 
         <div class="workspace">
@@ -201,8 +205,8 @@
 
 <script>
     const { translit } = require('./translitEngine.js');
+    const { ipcRenderer } = require('electron');
 
-    // Изменили стартовый режим на 'seo'
     let currentMode = 'seo';
     const input = document.getElementById('inputText');
     const output = document.getElementById('outputText');
@@ -213,14 +217,33 @@
 
     input.addEventListener('input', updateTranslation);
 
+    function selectMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.nav-item').forEach(el => {
+            if (el.getAttribute('data-mode') === mode) {
+                el.classList.add('active');
+                document.getElementById('currentModeTitle').innerText = el.innerText;
+            } else {
+                el.classList.remove('active');
+            }
+        });
+        updateTranslation();
+    }
+
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', (e) => {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            e.target.classList.add('active');
-            currentMode = e.target.getAttribute('data-mode');
-            document.getElementById('currentModeTitle').innerText = e.target.innerText;
-            updateTranslation();
+            const mode = e.target.getAttribute('data-mode');
+            selectMode(mode);
+            ipcRenderer.send('set-mode', mode);
         });
+    });
+
+    ipcRenderer.on('mode-changed', (event, mode) => {
+        selectMode(mode);
+    });
+
+    document.getElementById('translitClipboardBtn').addEventListener('click', () => {
+        ipcRenderer.send('translit-clipboard');
     });
 
     document.getElementById('themeBtn').addEventListener('click', () => {
@@ -237,8 +260,14 @@
     });
 
     document.getElementById('copyBtn').addEventListener('click', () => {
-        output.select();
-        document.execCommand('copy');
+        if (output.value) {
+            navigator.clipboard.writeText(output.value);
+            const originalText = document.getElementById('copyBtn').innerText;
+            document.getElementById('copyBtn').innerText = 'Скопировано! ✓';
+            setTimeout(() => {
+                document.getElementById('copyBtn').innerText = originalText;
+            }, 1500);
+        }
     });
 </script>
 </body>
